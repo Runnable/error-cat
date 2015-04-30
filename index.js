@@ -17,6 +17,7 @@ module.exports = ErrorCat;
 
 /**
  * Creates a new ErrorCat and initializes rollbar if available.
+ * @class
  */
 function ErrorCat () {
   if (this.canUseRollbar()) {

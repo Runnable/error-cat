@@ -49,7 +49,6 @@ var app = express();
 var error = new MyErrorCat();
 app.use(error.respond);
 ```
-
 ## API
 
 The `error-cat` module exposes a single class named `ErrorCat`. Below is a
@@ -88,6 +87,15 @@ and reports it to rollbar via `ErrorCat.report` (see below).
 #### {void} `report(err)`
 Reports the given error via Rollbar. This method is automatically bypassed if
 `ErrorCat.canUseRollbar()` returns false (see above).
+
+## Contributing
+If you wish to contribute to `error-cat` please adhere to the following rules:
+
+1. Build and read the jsdoc - `npm run doc`
+2. Keep test coverage at 100%
+3. When building new components, please use the same OOP style as `index.js`
+4. For PRs include a good title, and a brief yet informative description of what
+   your PR does.
 
 ## License
 MIT
