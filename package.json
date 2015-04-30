@@ -1,0 +1,45 @@
+{
+  "name": "error-cat",
+  "version": "0.0.0",
+  "description": "A friendly feline companion that helps you create, track, and report errors.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jshint index.js && lab -v -c -a code test/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Runnable/error-cat.git"
+  },
+  "jshintConfig": {
+    "node": true,
+    "curly": true
+  },
+  "keywords": [
+    "error",
+    "reporting",
+    "rollbar",
+    "express"
+  ],
+  "author": "Ryan Sandor Richards <ryan@runnable.com> (http://www.runnable.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Runnable/error-cat/issues"
+  },
+  "homepage": "https://github.com/Runnable/error-cat",
+  "dependencies": {
+    "101": "^0.16.1",
+    "auto-debug": "^1.0.1",
+    "boom": "^2.7.1",
+    "loadenv": "^1.0.3",
+    "rollbar": "^0.5.3"
+  },
+  "devDependencies": {
+    "code": "^1.4.0",
+    "jshint": "^2.7.0",
+    "lab": "^5.8.0",
+    "sinon": "^1.14.1"
+  }
+}
