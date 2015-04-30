@@ -1,5 +1,7 @@
 # error-cat
 [![Build Status](https://travis-ci.org/Runnable/error-cat.svg?branch=master)](https://travis-ci.org/Runnable/error-cat)
+[![Dependency Status](https://david-dm.org/Runnable/error-cat.svg)]](https://david-dm.org/Runnable/error-cat)
+[![devDependency Status](https://david-dm.org/Runnable/error-cat/dev-status.svg)](https://david-dm.org/Runnable/error-cat/dev-status.svg)
 
 A friendly feline companion that helps you create errors, track them, and report them via rollbar.
 
