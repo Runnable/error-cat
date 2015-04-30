@@ -13,7 +13,7 @@ var app = express()
 var ErrorCat = require('error-cat');
 
 // 2. Log and report errors using the static responder method
-app.use(ErrorCat.responder);
+app.use(ErrorCat.middleware);
 ```
 
 ## Extending error-cat
@@ -33,7 +33,7 @@ function MyErrorCat() {
 util.inherits(MyErrorCat, ErrorCat);
 
 MyErrorCat.prototype.respond = function (err, req, res) {
-  // Handle errors in a custom way...
+  // Custom middleware...
 };
 
 MyErrorCat.prototype.report = function (err, req, res) {
@@ -52,19 +52,16 @@ app.use(error.respond);
 
 ## API
 
-### Module Properties
+The `error-cat` module exposes a single class named `ErrorCat`. Below is a
+complete listing of its methods.
 
-The `error-cat` module exposes a single class named `ErrorCat`. This class has
-two static properties:
+#### ErrorCat.middleware(err, req, res, next)
+An express middleware that can be used to handle error responses with
+`error-cat` (uses the method `respond` detailed in the next section).
 
-1. `ErrorCat._instance` - A default instance for ease of use.
-2. `ErrorCat.responder` - An express middleware that can be used to handle error
-   responses with `error-cat` (uses the method `respond` detailed in the next
-   section).
-
-Both properties are set as `writable: false`, and will throw errors if you
-attempt to assign them new values. If you need to change the basic beahvior
-please see the `Extending error-cat` section above.
+Note, this static method is set as `writable: false`, and will throw an error
+if you attempt to assign it a different value. If you need to change the default
+behavior please see the `Extending error-cat` section above.
 
 ### ErrorCat Methods
 

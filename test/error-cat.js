@@ -20,18 +20,10 @@ describe('ErrorCat', function() {
       done();
     });
 
-    it('should expose an immutable instance', function(done) {
-      expect(ErrorCat._instance).to.be.an.instanceof(ErrorCat);
+    it('should expose an immutable express middleware', function(done) {
+      expect(ErrorCat.middleware).to.be.a.function();
       expect(function () {
-        ErrorCat._instance = 10;
-      }).to.throw();
-      done();
-    });
-
-    it('should expose an immutable static responder method', function(done) {
-      expect(ErrorCat.responder).to.be.a.function();
-      expect(function () {
-        ErrorCat.responder = 'hello';
+        ErrorCat.middleware = 'hello';
       }).to.throw();
       done();
     });

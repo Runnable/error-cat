@@ -97,18 +97,14 @@ ErrorCat.prototype.report = function (err) {
  * Default ErrorCat Instance.
  * @type {ErrorCat}
  */
-Object.defineProperty(ErrorCat, '_instance', {
-  value: new ErrorCat(),
-  writable: false,
-  enumerable: true
-});
+var instance = new ErrorCat();
 
 /**
  * Express error responder middleware.
  * @type {function}
  */
-Object.defineProperty(ErrorCat, 'responder', {
-  value: ErrorCat._instance.respond.bind(ErrorCat._instance),
+Object.defineProperty(ErrorCat, 'middleware', {
+  value: instance.respond.bind(instance),
   writable: false,
   enumerable: true
 });
