@@ -1,4 +1,6 @@
 # error-cat
+[![Build Status](https://travis-ci.org/Runnable/error-cat.svg?branch=master)](https://travis-ci.org/Runnable/error-cat)
+
 A friendly feline companion that helps you create errors, track them, and report them via rollbar.
 
 ## Using error-cat with express
