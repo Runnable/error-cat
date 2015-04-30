@@ -87,9 +87,10 @@ ErrorCat.prototype.log = function (err) {
  * @param {Error} err The error to report.
  */
 ErrorCat.prototype.report = function (err) {
-  if (this.canUseRollbar()) {
-    rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, noop);
+  if (!exists(err) || err.report === false || !this.canUseRollbar()) {
+    return;
   }
+  rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, noop);
 };
 
 /**

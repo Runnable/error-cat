@@ -211,14 +211,7 @@ describe('ErrorCat', function() {
       done();
     });
 
-    it('should do nothing when rollbar is unavailable', function(done) {
-      error.canUseRollbar.returns(false);
-      error.report(new Error());
-      expect(rollbar.handleErrorWithPayloadData.callCount).to.equal(0);
-      done();
-    });
-
-    it('should use rollbar when available', function(done) {
+    it('should report errors via rollbar', function(done) {
       error.report(new Error());
       expect(rollbar.handleErrorWithPayloadData.calledOnce).to.be.true();
       done();
@@ -238,6 +231,26 @@ describe('ErrorCat', function() {
       error.report({});
       expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
         .to.deep.equal({ custom: {} });
+      done();
+    });
+
+    it('should do nothing when rollbar is unavailable', function(done) {
+      error.canUseRollbar.returns(false);
+      error.report(new Error());
+      expect(rollbar.handleErrorWithPayloadData.callCount).to.equal(0);
+      done();
+    });
+
+    it('should not report errors if report flag is false', function(done) {
+      error.report({ report: false });
+      expect(rollbar.handleErrorWithPayloadData.callCount).to.equal(0);
+      done();
+    });
+
+    it('should not report undefined errors', function (done) {
+      error.report(null);
+      error.report(undefined);
+      expect(rollbar.handleErrorWithPayloadData.callCount).to.equal(0);
       done();
     });
   }); // end 'report'
