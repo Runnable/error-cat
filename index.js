@@ -94,18 +94,21 @@ ErrorCat.prototype.report = function (err) {
   rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, noop);
 };
 
-/**
- * Default ErrorCat Instance.
- * @type {ErrorCat}
- */
+
+// Expose default instance methods
 var instance = new ErrorCat();
 
-/**
- * Express error responder middleware.
- * @type {function}
- */
-Object.defineProperty(ErrorCat, 'middleware', {
-  value: instance.respond.bind(instance),
-  writable: false,
-  enumerable: true
+var defaultMethods = {
+  'middleware': 'respond',
+  'create': 'create',
+  'log': 'log',
+  'report': 'report'
+};
+
+Object.keys(defaultMethods).forEach(function (name) {
+  Object.defineProperty(ErrorCat, name, {
+    value: instance[defaultMethods[name]].bind(instance),
+    writable: false,
+    enumerable: true
+  });
 });
