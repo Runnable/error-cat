@@ -27,6 +27,30 @@ describe('ErrorCat', function() {
       }).to.throw();
       done();
     });
+
+    it('should expose an immutable create method', function(done) {
+      expect(ErrorCat.create).to.be.a.function();
+      expect(function () {
+        ErrorCat.create = 'something else';
+      }).to.throw();
+      done();
+    });
+
+    it('should expose an immutable log method', function(done) {
+      expect(ErrorCat.log).to.be.a.function();
+      expect(function () {
+        ErrorCat.log = function () {};
+      }).to.throw();
+      done();
+    });
+
+    it('should expose an immutable report method', function(done) {
+      expect(ErrorCat.report).to.be.a.function();
+      expect(function () {
+        ErrorCat.report = 22;
+      }).to.throw();
+      done();
+    });
   }); // end 'interface'
 
   describe('constructor', function() {
