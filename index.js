@@ -1,6 +1,5 @@
 'use strict';
 
-require('loadenv')('error-cat:env');
 var envIs = require('101/env-is');
 var noop = require('101/noop');
 var exists = require('101/exists');
@@ -94,10 +93,10 @@ ErrorCat.prototype.report = function (err) {
   rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, noop);
 };
 
-
-// Expose default instance methods
-var instance = new ErrorCat();
-
+/**
+ * Maps exposed function names to default instance method names.
+ * @type {object}
+ */
 var defaultMethods = {
   'middleware': 'respond',
   'create': 'create',
@@ -105,6 +104,13 @@ var defaultMethods = {
   'report': 'report'
 };
 
+/**
+ * Default instance used for module level functions.
+ * @type {ErrorCat}
+ */
+var instance = new ErrorCat();
+
+// Expose module functions by adding immutable static methods to ErrorCat
 Object.keys(defaultMethods).forEach(function (name) {
   Object.defineProperty(ErrorCat, name, {
     value: instance[defaultMethods[name]].bind(instance),

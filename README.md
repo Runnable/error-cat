@@ -6,6 +6,20 @@
 
 A friendly feline companion that helps you create errors, track them, and report them via rollbar.
 
+## Basic usage
+```js
+var ErrorCat = require('error-cat');
+
+// Create, Log, and Report Errors
+var err = ErrorCat.create(404, 'Not Found');
+
+// Log and Report Errors
+ErrorCat.log(someError);
+
+// Report Errors via Rollbar
+ErrorCat.report(anotherError);
+```
+
 ## Using error-cat with express
 Error cat was designed to be as easy as possible to use with express. Here is an
 example of how to do so:

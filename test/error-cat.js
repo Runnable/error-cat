@@ -1,6 +1,5 @@
 'use strict';
 
-require('loadenv')('error-cat:test:env');
 var Lab = require('lab');
 var lab = exports.lab = Lab.script();
 var describe = lab.describe;

@@ -36,7 +36,6 @@
     "101": "^0.16.1",
     "auto-debug": "^1.0.1",
     "boom": "^2.7.1",
-    "loadenv": "^1.0.3",
     "rollbar": "^0.5.3"
   },
   "devDependencies": {
