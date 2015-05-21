@@ -118,17 +118,19 @@ describe('ErrorCat', function() {
 
     beforeEach(function (done) {
       sinon.stub(error, 'log');
+      sinon.stub(error, 'report');
       sinon.stub(Boom, 'create');
       done();
     });
 
     afterEach(function (done) {
       error.log.restore();
+      error.report.restore();
       Boom.create.restore();
       done();
     });
 
-    it('should create a new boom error', function(done) {
+    it('should create a new boom error, not send to rollbar', function(done) {
       var code = 400;
       var message = 'Error Message';
       var data = { key: 'value' };
@@ -146,7 +148,57 @@ describe('ErrorCat', function() {
       expect(error.log.calledWith(err)).to.be.true();
       done();
     });
+
+    it('should NOT send the error to rollbar', function(done) {
+      var err = error.create(400, 'Message', {});
+      expect(error.report.notCalled).to.be.true();
+      done();
+    });
   }); // end 'create'
+
+  describe('createAndReport', function() {
+    var error = new ErrorCat();
+
+    beforeEach(function (done) {
+      sinon.stub(error, 'log');
+      sinon.stub(error, 'report');
+      sinon.stub(Boom, 'create');
+      done();
+    });
+
+    afterEach(function (done) {
+      error.log.restore();
+      error.report.restore();
+      Boom.create.restore();
+      done();
+    });
+
+    it('should create a new boom error', function(done) {
+      var code = 400;
+      var message = 'Error Message';
+      var data = { key: 'value' };
+      var expected = new Error('Errorz');
+      Boom.create.returns(expected);
+      expect(error.createAndReport(code, message, data)).to.equal(expected);
+      expect(Boom.create.calledOnce).to.be.true();
+      expect(Boom.create.calledWith(code, message, data)).to.be.true();
+      done();
+    });
+
+    it('should log the error', function(done) {
+      var err = error.createAndReport(400, 'Message', {});
+      expect(error.log.calledOnce).to.be.true();
+      expect(error.log.calledWith(err)).to.be.true();
+      done();
+    });
+
+    it('should send the error to rollbar', function(done) {
+      var err = error.createAndReport(400, 'Message', {});
+      expect(error.report.calledOnce).to.be.true();
+      expect(error.report.calledWith(err)).to.be.true();
+      done();
+    });
+  }); // end 'createAndReport'
 
   describe('respond', function() {
     var error = new ErrorCat();
@@ -202,11 +254,10 @@ describe('ErrorCat', function() {
       done();
     });
 
-    it('should report errors', function(done) {
+    it('should NOT report errors', function(done) {
       var err = new Error('Example');
       error.log(err);
-      expect(error.report.calledOnce).to.be.true();
-      expect(error.report.calledWith(err)).to.be.true();
+      expect(error.report.notCalled).to.be.true();
       done();
     });
   }); // end 'log'

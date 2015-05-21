@@ -9,7 +9,7 @@
   "scripts": {
     "doc": "jsdoc index.js -d doc/; open -a 'Google Chrome' doc/index.html",
     "lint": "jshint index.js",
-    "unit": "lab -v -c -a code test/*",
+    "unit": "lab -v -c -a code",
     "test": "npm run lint && npm run unit"
   },
   "repository": {
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/Runnable/error-cat",
   "dependencies": {
-    "101": "^0.16.1",
+    "101": "^0.18.0",
     "auto-debug": "^1.0.1",
     "boom": "^2.7.1",
     "rollbar": "^0.5.3"
