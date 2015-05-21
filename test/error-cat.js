@@ -130,7 +130,7 @@ describe('ErrorCat', function() {
       done();
     });
 
-    it('should create a new boom error, not send to rollbar', function(done) {
+    it('should create a new boom error', function(done) {
       var code = 400;
       var message = 'Error Message';
       var data = { key: 'value' };
