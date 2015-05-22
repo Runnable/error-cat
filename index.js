@@ -42,6 +42,8 @@ ErrorCat.prototype.canUseRollbar = function () {
 
 /**
  * Factory method that creates and logs new boom errors.
+ * Does NOT report errors - use createAndReport
+ * @param {Number} code HTTP error code for the error
  * @param {string} message Message describing the error.
  * @param {mixed} data Additional data for the error.
  * @return {Error} The error object as specified by the parameters.
@@ -49,6 +51,20 @@ ErrorCat.prototype.canUseRollbar = function () {
 ErrorCat.prototype.create = function (code, message, data) {
   var err = Boom.create(code, message, data);
   this.log(err);
+  return err;
+};
+
+/**
+ * Factory method to create AND report boom errors.
+ * Logs with debug AND reports error to rollbar (if able)
+ * @param {Number} code HTTP error code for the error
+ * @param {string} message Message describing the error.
+ * @param {mixed} data Additional data for the error.
+ * @return {Error} The error object as specified by the parameters.
+ */
+ErrorCat.prototype.createAndReport = function (code, message, data) {
+  var err = this.create(code, message, data); // calls this.log
+  this.report(err);
   return err;
 };
 
@@ -71,14 +87,14 @@ ErrorCat.prototype.respond = function (err, req, res, next) {
     err.isBoom ? err.output.payload : 'Internal Server Error'
   ));
 };
+/* jslint unused:true */
 
 /**
- * Logs errors via debug, and reports them to rollbar.
+ * Logs errors via debug
  * @param {Error} err The error to log.
  */
 ErrorCat.prototype.log = function (err) {
   this.debug(err);
-  this.report(err);
 };
 
 /**
