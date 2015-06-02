@@ -69,6 +69,32 @@ ErrorCat.prototype.createAndReport = function (code, message, data) {
 };
 
 /**
+ * Wraps an error as a boom error and logs it.
+ * @param {Error} err Error to wrap.
+ * @param {Number} code HTTP Response code for the boom error.
+ * @param {String} message Additional message for the error.
+ * @return {Error} The boom error that wraps the given error.
+ */
+ErrorCat.prototype.wrap = function (err, code, message) {
+  var boomError = Boom.wrap(err, code, message);
+  this.log(boomError);
+  return boomError;
+};
+
+/**
+ * Wraps an error as a boom error and reports it via rollbar.
+ * @param {Error} err Error to wrap.
+ * @param {Number} code HTTP Response code for the boom error.
+ * @param {String} message Additional message for the error.
+ * @return {Error} The boom error that wraps the given error.
+ */
+ErrorCat.prototype.wrapAndReport = function (err, code, message) {
+  var boomError = this.wrap(err, code, message);
+  this.report(boomError);
+  return boomError;
+};
+
+/**
  * Responder that sends error information along with a 500 status code.
  * @param {Error} err Error to use for the response.
  * @param {boolean} err.isBoom Indicates whether or not `err` is a boom error.
