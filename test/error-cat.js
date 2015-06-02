@@ -200,6 +200,88 @@ describe('ErrorCat', function() {
     });
   }); // end 'createAndReport'
 
+  describe('wrap', function() {
+    var error = new ErrorCat();
+
+    beforeEach(function (done) {
+      sinon.stub(error, 'log');
+      sinon.stub(error, 'report');
+      sinon.spy(Boom, 'wrap');
+      done();
+    });
+
+    afterEach(function (done) {
+      error.log.restore();
+      error.report.restore();
+      Boom.wrap.restore();
+      done();
+    });
+
+    it('should wrap the given error as a boom error', function(done) {
+      var err = new Error('Wowza');
+      var result = error.wrap(err, 502, 'hello world');
+      expect(result.isBoom).to.be.true();
+      expect(Boom.wrap.calledOnce).to.be.true();
+      expect(Boom.wrap.calledWith(err, 502, 'hello world')).to.be.true();
+      done();
+    });
+
+    it('should log the error', function(done) {
+      var err = new Error('sup');
+      var result = error.wrap(err, 404, 'not foundxorz');
+      expect(error.log.calledOnce).to.be.true();
+      expect(error.log.calledWith(result)).to.be.true();
+      done();
+    });
+
+    it('should not report the error', function(done) {
+      error.wrap(new Error('playa'), 400, 'user errrrr');
+      expect(error.report.notCalled).to.be.true();
+      done();
+    });
+  }); // end 'wrap'
+
+  describe('wrapAndReport', function() {
+    var error = new ErrorCat();
+
+    beforeEach(function (done) {
+      sinon.stub(error, 'log');
+      sinon.stub(error, 'report');
+      sinon.spy(Boom, 'wrap');
+      done();
+    });
+
+    afterEach(function (done) {
+      error.log.restore();
+      error.report.restore();
+      Boom.wrap.restore();
+      done();
+    });
+
+    it('should wrap the given error as a boom error', function(done) {
+      var err = new Error('Hello');
+      var result = error.wrapAndReport(err, 500, 'supa');
+      expect(result.isBoom).to.be.true();
+      expect(Boom.wrap.calledOnce).to.be.true();
+      expect(Boom.wrap.calledWith(err, 500, 'supa')).to.be.true();
+      done();
+    });
+
+    it('should log the error', function(done) {
+      var result = error.wrapAndReport(new Error('zzz'), 409, 'wowowo');
+      expect(error.log.calledOnce).to.be.true();
+      expect(error.log.calledWith(result)).to.be.true();
+      done();
+    });
+
+    it('should report the error', function(done) {
+      var result = error.wrapAndReport(new Error('29292'), 599, 'yuss');
+      expect(error.report.calledOnce).to.be.true();
+      expect(error.report.calledWith(result)).to.be.true();
+      done();
+    });
+  }); // end 'wrapAndReport'
+
   describe('respond', function() {
     var error = new ErrorCat();
 
