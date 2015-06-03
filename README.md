@@ -99,6 +99,43 @@ to load the environment so feel free to use its conventions to define
 Creates and automatically logs a new [boom](https://www.npmjs.com/package/boom)
 via the `ErrorCat.log` method (see below). The parameters mirror `Boom.create`.
 
+#### {Boom~Error} `createAndReport(code, message, data)`
+Creates a new [boom](https://www.npmjs.com/package/boom) error, logs it via the
+`ErrorCat.log` method (see below), and reports it to rollbar via the
+`ErrorCat.report` method (see below).
+
+#### {Boom~Error} `wrap(err, code, message)`
+Creates a new [boom](https://www.npmjs.com/package/boom) error from an existing
+error, and logs it via the `ErrorCat.log` method (see below). Data can be
+supplied to the resulting boom error by setting the `.data` attribute on the
+error before wrapping it. Here's an example:
+
+```js
+var reqBody = 'Information that may cause request to fail.';
+var options = {
+  url: 'http://api.service.com/route',
+  body: reqBody
+};
+
+// Send an http request to an external service...
+request.post(options, function (err) {
+  if (err) {
+    // Add some data about the state that caused the error
+    err.data = { body: reqBody };
+
+    // And then wrap the error so it can be logged appropriately
+    ErrorCat.wrap(err, 502);
+  }
+});
+```
+
+#### {Boom~Error} `wrapAndReport(err, code, message)`
+Creates a new [boom](https://www.npmjs.com/package/boom) error from an existing
+error, and logs it via the `ErrorCat.log` method (see below), and reports it to
+rollbar via the `ErrorCat.report` method (see blow). Note: as with `wrap` above
+data can be supplied to the resulting boom error by setting the `.data`
+attribute on the error before wrapping it.
+
 #### {void} `log(err)`
 Logs the given error using [auto-debug](https://www.npmjs.com/package/auto-debug)
 and reports it to rollbar via `ErrorCat.report` (see below).
