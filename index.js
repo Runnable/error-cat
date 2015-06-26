@@ -157,7 +157,9 @@ var instance = new ErrorCat();
 // Expose module functions by adding immutable static methods to ErrorCat
 Object.keys(defaultMethods).forEach(function (name) {
   Object.defineProperty(ErrorCat, name, {
-    value: instance[defaultMethods[name]].bind(instance),
+    value: function () {
+      return instance[defaultMethods[name]].apply(instance, arguments);
+    },
     writable: false,
     enumerable: true
   });
