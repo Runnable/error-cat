@@ -18,37 +18,49 @@ describe('ErrorCat', function() {
       expect(ErrorCat).to.be.a.function();
       done();
     });
+    describe('non test env', function() {
+      var NODE_ENV = process.env.NODE_ENV;
+      beforeEach(function (done) {
+        process.env.NODE_ENV = 'nottest';
+        done();
+      });
 
-    it('should expose an immutable express middleware', function(done) {
-      expect(ErrorCat.middleware).to.be.a.function();
-      expect(function () {
-        ErrorCat.middleware = 'hello';
-      }).to.throw();
-      done();
-    });
+      afterEach(function (done) {
+        process.env.NODE_ENV = NODE_ENV;
+        done();
+      });
 
-    it('should expose an immutable create method', function(done) {
-      expect(ErrorCat.create).to.be.a.function();
-      expect(function () {
-        ErrorCat.create = 'something else';
-      }).to.throw();
-      done();
-    });
+      it('should expose an immutable express middleware', function(done) {
+        expect(ErrorCat.middleware).to.be.a.function();
+        expect(function () {
+          ErrorCat.middleware = 'hello';
+        }).to.not.throw(); // NOT bc envIs test
+        done();
+      });
 
-    it('should expose an immutable log method', function(done) {
-      expect(ErrorCat.log).to.be.a.function();
-      expect(function () {
-        ErrorCat.log = function () {};
-      }).to.throw();
-      done();
-    });
+      it('should expose an immutable create method', function(done) {
+        expect(ErrorCat.create).to.be.a.function();
+        expect(function () {
+          ErrorCat.create = 'something else';
+        }).to.not.throw(); // NOT bc envIs test
+        done();
+      });
 
-    it('should expose an immutable report method', function(done) {
-      expect(ErrorCat.report).to.be.a.function();
-      expect(function () {
-        ErrorCat.report = 22;
-      }).to.throw();
-      done();
+      it('should expose an immutable log method', function(done) {
+        expect(ErrorCat.log).to.be.a.function();
+        expect(function () {
+          ErrorCat.log = function () {};
+        }).to.not.throw(); // NOT bc envIs test
+        done();
+      });
+
+      it('should expose an immutable report method', function(done) {
+        expect(ErrorCat.report).to.be.a.function();
+        expect(function () {
+          ErrorCat.report = 22;
+        }).to.not.throw(); // NOT bc envIs test
+        done();
+      });
     });
   }); // end 'interface'
 
