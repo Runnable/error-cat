@@ -1,7 +1,6 @@
 'use strict';
 
 var envIs = require('101/env-is');
-var noop = require('101/noop');
 var exists = require('101/exists');
 var rollbar = require('rollbar');
 var autoDebug = require('auto-debug');
@@ -128,11 +127,13 @@ ErrorCat.prototype.log = function (err) {
  * environments (i.e. `process.env.NODE_ENV === 'test'`).
  * @param {Error} err The error to report.
  */
-ErrorCat.prototype.report = function (err) {
+ErrorCat.prototype.report = function (err, req) {
   if (!exists(err) || err.report === false || !this.canUseRollbar()) {
     return;
   }
-  rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, noop);
+  // rollbar.handleErrorWithPayloadData usage:
+  //   https://github.com/rollbar/node_rollbar/blob/a03b3a6e6e0a2734e2657cbf41e21927003f505d/lib/notifier.js#L359
+  rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, req);
 };
 
 /**
