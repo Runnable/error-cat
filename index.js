@@ -33,7 +33,7 @@ function ErrorCat () {
  * Determines if the application is using rollbar. Specifically it checks to see
  * if `process.env.ROLLBAR_KEY` is defined, and that the application is not
  * executing under a test environment (i.e. `process.env.NODE_ENV !== 'test'`).
- * @return `true` If ErrorCat should use rollbar, `false` otherwise.
+ * @return {Boolean} `true` If ErrorCat should use rollbar, `false` otherwise.
  */
 ErrorCat.prototype.canUseRollbar = function () {
   return exists(process.env.ROLLBAR_KEY) && !envIs('test');
@@ -126,6 +126,7 @@ ErrorCat.prototype.log = function (err) {
  * Reports errors to rollbar. Note this method is automatically bypassed in test
  * environments (i.e. `process.env.NODE_ENV === 'test'`).
  * @param {Error} err The error to report.
+ * @param {object} [req] optional request to report.
  */
 ErrorCat.prototype.report = function (err, req) {
   if (!exists(err) || err.report === false || !this.canUseRollbar()) {
