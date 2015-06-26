@@ -17,7 +17,7 @@ var err = ErrorCat.create(404, 'Not Found');
 ErrorCat.log(someError);
 
 // Report Errors via Rollbar
-ErrorCat.report(anotherError);
+ErrorCat.report(anotherError, req);
 ```
 
 ## Using error-cat with express
@@ -140,7 +140,7 @@ attribute on the error before wrapping it.
 Logs the given error using [auto-debug](https://www.npmjs.com/package/auto-debug)
 and reports it to rollbar via `ErrorCat.report` (see below).
 
-#### {void} `report(err)`
+#### {void} `report(err, [req])`
 Reports the given error via Rollbar. This method is automatically bypassed if
 `ErrorCat.canUseRollbar()` returns false (see above).
 

@@ -1,7 +1,6 @@
 'use strict';
 
 var envIs = require('101/env-is');
-var noop = require('101/noop');
 var exists = require('101/exists');
 var rollbar = require('rollbar');
 var autoDebug = require('auto-debug');
@@ -34,7 +33,7 @@ function ErrorCat () {
  * Determines if the application is using rollbar. Specifically it checks to see
  * if `process.env.ROLLBAR_KEY` is defined, and that the application is not
  * executing under a test environment (i.e. `process.env.NODE_ENV !== 'test'`).
- * @return `true` If ErrorCat should use rollbar, `false` otherwise.
+ * @return {Boolean} `true` If ErrorCat should use rollbar, `false` otherwise.
  */
 ErrorCat.prototype.canUseRollbar = function () {
   return exists(process.env.ROLLBAR_KEY) && !envIs('test');
@@ -127,12 +126,15 @@ ErrorCat.prototype.log = function (err) {
  * Reports errors to rollbar. Note this method is automatically bypassed in test
  * environments (i.e. `process.env.NODE_ENV === 'test'`).
  * @param {Error} err The error to report.
+ * @param {object} [req] optional request to report.
  */
-ErrorCat.prototype.report = function (err) {
+ErrorCat.prototype.report = function (err, req) {
   if (!exists(err) || err.report === false || !this.canUseRollbar()) {
     return;
   }
-  rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, noop);
+  // rollbar.handleErrorWithPayloadData usage:
+  //   https://github.com/rollbar/node_rollbar/blob/a03b3a6e6e0a2734e2657cbf41e21927003f505d/lib/notifier.js#L359
+  rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, req);
 };
 
 /**
