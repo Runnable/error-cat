@@ -1,6 +1,6 @@
 {
   "name": "error-cat",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "A friendly feline companion that helps you create, track, and report errors.",
   "main": "index.js",
   "directories": {
