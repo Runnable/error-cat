@@ -10,10 +10,13 @@ A friendly feline companion that helps you create errors, track them, and report
 ```js
 var ErrorCat = require('error-cat');
 
-// Create, Log, and Report Errors
+// Create and Log Errors (does not send to external service)
 var err = ErrorCat.create(404, 'Not Found');
 
-// Log and Report Errors
+// Create, Log, and Report Errors (i.e., also sends to Rollbar)
+var teapot = ErrorCat.createAndReport(418, 'I am a Teapot');
+
+// Log Errors (to stdout/stderr, e.g. w/ `auto-debug`)
 ErrorCat.log(someError);
 
 // Report Errors via Rollbar
