@@ -143,9 +143,11 @@ attribute on the error before wrapping it.
 Logs the given error using [auto-debug](https://www.npmjs.com/package/auto-debug)
 and reports it to rollbar via `ErrorCat.report` (see below).
 
-#### {void} `report(err, [req])`
+#### {void} `report(err, [req], [cb])`
 Reports the given error via Rollbar. This method is automatically bypassed if
 `ErrorCat.canUseRollbar()` returns false (see above).
+optional req argument to add more data
+optional cb which is called after reporting
 
 ## Contributing
 If you wish to contribute to `error-cat` please adhere to the following rules:

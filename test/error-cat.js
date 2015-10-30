@@ -377,6 +377,32 @@ describe('ErrorCat', function() {
       done();
     });
 
+    it('should report with req if passed', function(done) {
+      var req = 'test';
+      error.report(new Error(), req);
+      expect(rollbar.handleErrorWithPayloadData.firstCall.args[2])
+        .to.equal(req);
+      done();
+    });
+
+    it('should cb if passed', function(done) {
+      var req = 'test';
+      rollbar.handleErrorWithPayloadData.yieldsAsync();
+      error.report(new Error(), req, function () {
+        expect(rollbar.handleErrorWithPayloadData.firstCall.args[2])
+          .to.equal(req);
+        done();
+      });
+    });
+
+    it('should cb if passed w/o req', function(done) {
+      rollbar.handleErrorWithPayloadData.yieldsAsync();
+      error.report(new Error(), function () {
+        expect(rollbar.handleErrorWithPayloadData.calledOnce).to.be.true();
+        done();
+      });
+    });
+
     it('should provide error data when available', function(done) {
       var err = new Error();
       err.data = { some: 'data' };
