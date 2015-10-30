@@ -127,14 +127,20 @@ ErrorCat.prototype.log = function (err) {
  * environments (i.e. `process.env.NODE_ENV === 'test'`).
  * @param {Error} err The error to report.
  * @param {object} [req] optional request to report.
+ * @param {object} [cb] optional cb after reporting.
  */
-ErrorCat.prototype.report = function (err, req) {
+ErrorCat.prototype.report = function (err, req, cb) {
   if (!exists(err) || err.report === false || !this.canUseRollbar()) {
     return;
   }
+
+  if (typeof req == 'function') {
+    cb = req;
+    req = null;
+  }
   // rollbar.handleErrorWithPayloadData usage:
   //   https://github.com/rollbar/node_rollbar/blob/a03b3a6e6e0a2734e2657cbf41e21927003f505d/lib/notifier.js#L359
-  rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, req);
+  rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, req, cb);
 };
 
 /**
