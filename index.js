@@ -2,6 +2,7 @@
 
 var envIs = require('101/env-is');
 var exists = require('101/exists');
+var isFunction = require('101/is-function');
 var rollbar = require('rollbar');
 var autoDebug = require('auto-debug');
 var Boom = require('boom');
@@ -134,7 +135,7 @@ ErrorCat.prototype.report = function (err, req, cb) {
     return;
   }
 
-  if (typeof req == 'function') {
+  if (isFunction(req)) {
     cb = req;
     req = null;
   }
