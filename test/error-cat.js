@@ -204,12 +204,45 @@ describe('ErrorCat', function() {
       done();
     });
 
-    it('should send the error to rollbar', function(done) {
-      var err = error.createAndReport(400, 'Message', {});
-      expect(error.report.calledOnce).to.be.true();
-      expect(error.report.calledWith(err)).to.be.true();
-      done();
+    describe('without reporting callback', function () {
+      it('should send the error to rollbar', function(done) {
+        var err = error.createAndReport(400, 'Message', {});
+        expect(error.report.calledOnce).to.be.true();
+        expect(error.report.calledWith(err)).to.be.true();
+        done();
+      });
     });
+
+    describe('with reporting callback', function () {
+      var myError = new Error('foobar');
+
+      beforeEach(function (done) {
+        Boom.create.returns(myError)
+        error.report.yieldsAsync(null);
+        done();
+      });
+
+      it('should callback with new error after reporting', function (done) {
+        // calls back with reportedError and generatedError
+        error.createAndReport(400, 'Message', {}, function (rErr, gErr) {
+          expect(error.report.calledOnce).to.be.true();
+          expect(rErr).to.be.null();
+          expect(gErr).to.equal(myError);
+          done();
+        });
+      });
+
+      it('should pass back any error reporting error', function (done) {
+        var reportingError = new Error('reporting error');
+        error.report.yieldsAsync(reportingError);
+        error.createAndReport(400, 'Message', {}, function (rErr, gErr) {
+          expect(error.report.calledOnce).to.be.true();
+          expect(rErr).to.equal(reportingError);
+          expect(gErr).to.equal(myError);
+          done();
+        });
+      });
+    })
   }); // end 'createAndReport'
 
   describe('wrap', function() {
