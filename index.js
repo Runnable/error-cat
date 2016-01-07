@@ -60,12 +60,19 @@ ErrorCat.prototype.create = function (code, message, data) {
  * @param {Number} code HTTP error code for the error
  * @param {string} message Message describing the error.
  * @param {mixed} data Additional data for the error.
+ * @param [Function] cb Optional callback with sigature (err, generatedError).
  * @return {Error} The error object as specified by the parameters.
  */
-ErrorCat.prototype.createAndReport = function (code, message, data) {
-  var err = this.create(code, message, data); // calls this.log
-  this.report(err);
-  return err;
+ErrorCat.prototype.createAndReport = function (code, message, data, cb) {
+  var generatedError = this.create(code, message, data); // calls this.log
+  if (isFunction(cb)) {
+    this.report(generatedError, function (reportingError) {
+      cb(reportingError, generatedError);
+    });
+  } else {
+    this.report(generatedError);
+    return generatedError;
+  }
 };
 
 /**
