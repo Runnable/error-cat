@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.org/Runnable/error-cat.svg?branch=master)](https://travis-ci.org/Runnable/error-cat)
 [![Dependency Status](https://david-dm.org/Runnable/error-cat.svg)](https://david-dm.org/Runnable/error-cat)
 [![devDependency Status](https://david-dm.org/Runnable/error-cat/dev-status.svg)](https://david-dm.org/Runnable/error-cat/dev-status.svg)
+[![Code Climate](https://codeclimate.com/github/Runnable/error-cat/badges/gpa.svg)](https://codeclimate.com/github/Runnable/error-cat)
+
 [![NPM](https://nodei.co/npm/error-cat.png?compact=true)](https://nodei.co/npm/error-cat)
 
 A friendly feline companion that helps you create errors, track them, and report them via rollbar.
