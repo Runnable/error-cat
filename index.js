@@ -148,7 +148,11 @@ ErrorCat.prototype.report = function (err, req, cb) {
   }
   // rollbar.handleErrorWithPayloadData usage:
   //   https://github.com/rollbar/node_rollbar/blob/a03b3a6e6e0a2734e2657cbf41e21927003f505d/lib/notifier.js#L359
-  rollbar.handleErrorWithPayloadData(err, { custom: (err.data || {}) }, req, cb);
+  var payload = {
+    level: err.level || 'error',
+    custom: err.data || {}
+  };
+  rollbar.handleErrorWithPayloadData(err, payload, req, cb);
 };
 
 /**
