@@ -454,9 +454,19 @@ describe('ErrorCat', function() {
     });
 
     it('should set level if provided', function(done) {
-      error.report({ level: 'warning' });
+      var testError = new Error('Some message');
+      testError.level = 'warning';
+      error.report(testError);
       expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
         .to.deep.equal({ level: 'warning', custom: {} });
+      done();
+    });
+
+    it('should use `error` as default level', function(done) {
+      var testError = new Error('Some message');
+      error.report(testError);
+      expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
+        .to.deep.equal({ level: 'error', custom: {} });
       done();
     });
 
