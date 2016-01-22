@@ -440,7 +440,7 @@ describe('ErrorCat', function() {
       var err = new Error();
       err.data = { some: 'data' };
       error.report(err);
-      var expected = { custom: err.data };
+      var expected = { level: 'error', custom: err.data };
       expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
         .to.deep.equal(expected);
       done();
@@ -449,7 +449,24 @@ describe('ErrorCat', function() {
     it('should give empty data when none was provided', function(done) {
       error.report({});
       expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
-        .to.deep.equal({ custom: {} });
+        .to.deep.equal({ level: 'error', custom: {} });
+      done();
+    });
+
+    it('should set level if provided', function(done) {
+      var testError = new Error('Some message');
+      testError.level = 'warning';
+      error.report(testError);
+      expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
+        .to.deep.equal({ level: 'warning', custom: {} });
+      done();
+    });
+
+    it('should use `error` as default level', function(done) {
+      var testError = new Error('Some message');
+      error.report(testError);
+      expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
+        .to.deep.equal({ level: 'error', custom: {} });
       done();
     });
 
