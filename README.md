@@ -72,7 +72,7 @@ use with `.catch`) and `try-catch` based synchronous applications.
 In this section we will show you how to use the provided core error classes and
 extend them to create your own error zoology.
 
-### Extending Error Classes
+#### Extending Error Classes
 Each of the error types, detailed below, can be extended for your own application.
 Building a robust error zoology is key in correctly implmenting a `try-catch` based
 error handling strategy in your application.
@@ -105,7 +105,7 @@ util.inherits(MonitoredError, BaseError)
 module.exports = MonitoredError
 ```
 
-### class `BaseError(message, data)` extends `Error`
+#### class `BaseError(message, data)` extends `Error`
 
 ```js
 var ErrorCat = require('error-cat')
@@ -139,10 +139,33 @@ Specifically, the following magic properties are set by base error:
   will default to an empty object literal unless it is set via the `data` argument
   in the `BaseError` constructor.  
 
-### class `RouteError(message, statusCode, data)` extends `BaseError`
+#### class `RouteError(message, statusCode, data)` extends `BaseError`
 Used to denote exceptions that arise during the handling of RESTful routes.
 The class is automatically annotated with additional metadata via the
 [boom](https://github.com/hapijs/boom) library.
+
+#### class `TaskError(message, queue, job)` extends `BaseError`
+This error class is specifically setup for use in worker servers. It serves as the
+root error for the [ponos](https://github.com/runnable/ponos) worker server library.
+It specifically sets information about the queue name and the job being processed
+when the error occured.
+
+Furthermore it exposes two methods that are used by external worker server libraries
+for automatically setting this data when task handlers for workers throw this type
+of error:
+
+- (void) `setQueue(name)` - Sets the queue name data
+- (void) `setJob(job)` - Sets the job data
+
+#### class `TaskFatalError(message, job, data)` extends `TaskError`
+Error class that is designed to be thrown when a worker server task handler
+encounters a scenario where it cannot possibly proceed with the processing of
+the given job. Worker server implementations should automatically acknowledge the
+job (even though it was not completed) when encountering this type of error.
+
+#### class `InvalidJobError(message, job, data)` extends `TaskFatalError`
+An error class designed to be thrown when a worker server task handler encounters
+a malformed or invalid job.
 
 ## Contributing
 If you wish to contribute to `error-cat` please adhere to the following rules:
