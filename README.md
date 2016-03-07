@@ -94,7 +94,7 @@ var monitor = require('monitor-dog')
  */
 var MonitoredError = function MonitoredError(message, data) {
   BaseError.call(message, data)
-  Mon
+  monitor.increment('errors')
 }
 util.inherits(MonitoredError, BaseError)
 
