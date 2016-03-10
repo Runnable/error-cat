@@ -1,6 +1,6 @@
 'use strict'
 
-const WorkerError = require('./task-error')
+const WorkerError = require('./worker-error')
 
 /**
  * Represents a warning level exception in the context of a worker server.
@@ -18,6 +18,6 @@ module.exports = class WorkerWarning extends WorkerError {
    */
   constructor (message, data, reporting, queue, job) {
     super(message, data, reporting, queue, job)
-    this.setLevel('warning')
+    this.setLevel('warn')
   }
 }

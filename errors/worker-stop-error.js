@@ -11,7 +11,7 @@ const WorkerError = require('./worker-error')
  * // NOTE ponos automatically adds the queue name and job to the error
  * //      in addition to using `ErrorCat.catch` to handle reporting
  * ponosServer.setTask('my-queue', function task(job) {
- * 	 throw new TaskFatalError('Something went terribly wrong...')
+ * 	 throw new WorkerStopError('Something went terribly wrong...')
  * })
  *
  * @param {String} message Message for the error.
@@ -22,6 +22,6 @@ const WorkerError = require('./worker-error')
  *
  * @class
  * @module error-cat:errors
- * @extends error-cat:errors~TaskError
+ * @extends error-cat:errors~WorkerError
  */
-module.exports = class TaskStopError extends WorkerError {}
+module.exports = class WorkerStopError extends WorkerError {}

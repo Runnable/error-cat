@@ -1,10 +1,10 @@
 'use strict'
 
-var Lab = require('lab')
-var lab = exports.lab = Lab.script()
-var describe = lab.describe
-var it = lab.test
-var expect = require('code').expect
+const Lab = require('lab')
+const lab = exports.lab = Lab.script()
+const describe = lab.describe
+const it = lab.test
+const expect = require('code').expect
 
 const BaseError = require('../../errors/base-error')
 

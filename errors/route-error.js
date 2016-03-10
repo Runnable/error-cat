@@ -31,7 +31,7 @@ module.exports = class RouteError extends BaseError {
   constructor (message, statusCode, data, reporting) {
     super(message, data, reporting)
     statusCode = statusCode || 500
-    this.setLevel((statusCode >= 500) ? 'error' : 'warning')
-    Boom.wrap(this, statusCode, message)
+    this.setLevel((statusCode >= 500) ? 'error' : 'warn')
+    Boom.wrap(this, statusCode)
   }
 }

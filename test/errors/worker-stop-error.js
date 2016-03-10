@@ -6,15 +6,15 @@ const describe = lab.describe
 const it = lab.test
 const expect = require('code').expect
 
+const WorkerError = require('../../errors/worker-error')
 const WorkerStopError = require('../../errors/worker-stop-error')
-const InvalidJobError = require('../../errors/invalid-job-error')
 
 describe('errors', () => {
-  describe('InvalidJobError', () => {
-    it('should extend WorkerStopError', (done) => {
-      const error = new InvalidJobError('some message')
-      expect(error).to.be.an.instanceof(WorkerStopError)
+  describe('WorkerStopError', () => {
+    it('should extend WorkerError', (done) => {
+      const error = new WorkerStopError('some message')
+      expect(error).to.be.an.instanceof(WorkerError)
       done()
     })
-  }) // end 'InvalidJobError'
+  }) // end 'WorkerStopError'
 }) // end 'errors'

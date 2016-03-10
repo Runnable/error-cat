@@ -18,6 +18,6 @@ module.exports = class Warning extends BaseError {
    */
   constructor (message, data, reporting) {
     super(message, data, reporting)
-    this.setLevel('warning')
+    this.setLevel('warn')
   }
 }
