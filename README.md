@@ -11,24 +11,15 @@ application errors to rollbar.
 ```js
 // Import the library. Uses the environment's `ROLLBAR_KEY` to automatically
 // setup rollbar reporting.
-var ErrorCat = require('error-cat')
+const cat = require('error-cat')
 
 // Fire-and-forget error reporting
-ErrorCat.report(new Error('Something bad'))
+cat.report(new Error('Something bad'))
 
 // Optionally, pass a callback to execute once the error has been reported
-ErrorCat.report(new Error('No good'), function () {
+cat.report(new Error('No good'), function () {
   // ...
 })
-
-// Pass express requests along to add additional information
-ErrorCat.report(error, req)
-
-// Use report in a promise chain (via bluebird)
-ErrorCat.reportPromise(error)
-  .then(function () {
-    // ...
-  })
 ```
 
 ## Using error-cat with express
@@ -36,14 +27,14 @@ Error cat was designed to be as easy as possible to use with express. Here is an
 example of how to do so:
 
 ```js
-var express = require('express')
-var app = express()
+const express = require('express')
+const app = express()
 
 // 1. Require error-cat
-var ErrorCat = require('error-cat')
+const cat = require('error-cat')
 
 // 2. Log and report errors using the static responder method
-app.use(ErrorCat.middleware)
+app.use(cat.middleware)
 ```
 
 ## Using error-cat in promise-based applications
@@ -54,7 +45,7 @@ report and then re-throw errors in a promise chain. Here's how to use it:
 Promise
   .try(something)
   .then(somethingElse)
-  .catch(ErrorCat.catch)
+  .catch(cat.catch)
   .catch(function (err) {
     // You'll still need this since `ErrorCat.catch` re-throws the error...
   })
@@ -84,19 +75,20 @@ base error class to automatically increment an error counter in data-dog (via
 ```js
 'use strict'
 
-var BaseError = require('error-cat').BaseError
-var monitor = require('monitor-dog')
+const BaseError = require('error-cat/errors/base-error')
+const monitor = require('monitor-dog')
 
 /**
  * Base class for all errors that should be monitored in data-dog.
  * @param  {[type]} message Message for the error.
  * @param  {[type]} data    Custom data to report to rollbar.
  */
-var MonitoredError = function MonitoredError(message, data) {
-  BaseError.call(message, data)
-  monitor.increment('errors')
+class MonitoredError extends BaseError {
+  constructor (message, data, reporting) {
+    super(message, data, reporting)
+    monitor.increment('errors')
+  }
 }
-util.inherits(MonitoredError, BaseError)
 
 /**
  * Monitored Error Class
@@ -105,46 +97,42 @@ util.inherits(MonitoredError, BaseError)
 module.exports = MonitoredError
 ```
 
-#### class `BaseError(message, data)` extends `Error`
+#### class `BaseError(message, data, reporting)` extends `Error`
+At the top of the core error hierarchy is `BaseError`. This class provides the
+following:
+
+1. An easy-to-use and extendable error class for application programmers
+2. Allow for meaningful "extra data"
+3. A method of defining how an error should be reported
+
+Here's an example that shows everything the base error has to offer:
 
 ```js
-var ErrorCat = require('error-cat')
+const BaseError = require('error-cat/errors/base-error')
 
-// Report an error as a warning with the given custom data
-var myError = new ErrorCat.BaseError('Something wicked...', {
-  customRollbarField: 'customValue'
+// Use it as a normal error...
+new BaseError('a message')
+
+// Pass data that should be reported in the constructor...
+new BaseError('message', { myData: 123 })
+
+// Pass reporting information on how it should be reported...
+new BaseError('message', {}, {
+  level: 'critical',      // the reporting level
+  fingerprint: 'mygroup'  // a grouping fingerprint
 })
-myError.level = 'warn'
-ErrorCat.report(myError)
 ```
 
-At the top of the core error hierarchy is `BaseError`. This class has two primary
-responsibilities:
+#### class `Warning(message, data, reporting)` extends `BaseError`
+Used to denote an exceptional case that isn't as serious as an error. By default
+these types of errors are not reported.
 
-1. Provide an easy-to-use and extendable error class for application programmers
-2. Set reasonable defaults for various "magic" error properties that are used
-   to control information and options when reporting errors to rollbar.
-
-Specifically, the following magic properties are set by base error:
-
-- (boolean) `.report = true` - Used to determine whether or not the error should
-  be reported to rollbar. Setting this value to `false` will cause error-cat
-  to skip reporting when encounting the error.
-- (string) `.level = 'error'` - Sets the level at which the error is reported
-  in rollbar. Acceptable values are: `critical`, `error`, `warn`, `info`.
-- (string) `.fingerprint = null` - Sets a specific fingerprint by which rollbar
-  should group the error. This is very useful for programmatically setting custom
-  groupings outside the defaults used in your rollbar configuration
-- (object) `.data = {}` - Additional custom data to be reported to rollbar. This
-  will default to an empty object literal unless it is set via the `data` argument
-  in the `BaseError` constructor.  
-
-#### class `RouteError(message, statusCode, data)` extends `BaseError`
+#### class `RouteError(message, statusCode, data, reporting)` extends `BaseError`
 Used to denote exceptions that arise during the handling of RESTful routes.
 The class is automatically annotated with additional metadata via the
 [boom](https://github.com/hapijs/boom) library.
 
-#### class `TaskError(message, queue, job)` extends `BaseError`
+#### class `WorkerError(message, data, reporting, queue, job)` extends `BaseError`
 This error class is specifically setup for use in worker servers. It serves as the
 root error for the [ponos](https://github.com/runnable/ponos) worker server library.
 It specifically sets information about the queue name and the job being processed
@@ -157,15 +145,46 @@ of error:
 - (void) `setQueue(name)` - Sets the queue name data
 - (void) `setJob(job)` - Sets the job data
 
-#### class `TaskFatalError(message, job, data)` extends `TaskError`
+#### class `WorkerStopError(message, data, reporting, queue, job)` extends `WorkerError`
 Error class that is designed to be thrown when a worker server task handler
 encounters a scenario where it cannot possibly proceed with the processing of
 the given job. Worker server implementations should automatically acknowledge the
 job (even though it was not completed) when encountering this type of error.
 
-#### class `InvalidJobError(message, job, data)` extends `TaskFatalError`
+#### class `InvalidJobError(message, data, reporting, queue, job)` extends `WorkerStopError`
 An error class designed to be thrown when a worker server task handler encounters
 a malformed or invalid job.
+
+
+## Reporters
+By default ErrorCat reports errors to rollbar. In order to support other services
+the library exposes an `AbstractReporter` class that can be extended as needed.
+The only method that is "required" to define in a subclass is `.report`, but the
+class has many other methods that can be easily overriden.
+
+A full treatment of building a custom reporter is outside the scope of this document.
+We advise that you simply read the `lib/abstract-reporter.js` class file thoroughly
+(it is fairly short) to get an understanding how to do so.
+
+For usage reference here is an example of how to implement a custom reporter:
+```js
+const AbstractReporter = require('error-cat/lib/abstract-reporter')
+const ErrorCat = require('error-cat/lib/error-cat')
+const noop = require('101/noop')
+
+// 1) Define the reporter...
+class ConsoleReporter extends AbstractReporter {
+  report (err, cb) {
+    if (!this.shouldReport(err)) {
+      return (cb || noop)()
+    }
+    console.error(this.getLevel(err), err.message)
+  }
+}
+
+// 2) Use it with a custom error-cat instance
+const cat = new ErrorCat(new ConsoleReporter('warn'))
+```
 
 ## Contributing
 If you wish to contribute to `error-cat` please adhere to the following rules:
