@@ -8,7 +8,7 @@
   },
   "scripts": {
     "doc": "jsdoc index.js -d doc/; open -a 'Google Chrome' doc/index.html",
-    "lint": "jshint index.js",
+    "lint": "standard --verbose",
     "unit": "lab -v -c -a code",
     "test": "npm run lint && npm run unit"
   },
@@ -42,8 +42,8 @@
   "devDependencies": {
     "code": "^1.4.0",
     "jsdoc": "^3.3.0-beta3",
-    "jshint": "^2.7.0",
     "lab": "^5.8.0",
-    "sinon": "^1.14.1"
+    "sinon": "^1.14.1",
+    "standard": "^6.0.8"
   }
 }

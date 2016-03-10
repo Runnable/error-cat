@@ -8,7 +8,7 @@ const WorkerError = require('./task-error')
  * @extends error-cat:errors~WorkerError
  * @author Ryan Sandor Richards
  */
-class WorkerWarning extends WorkerError {
+module.exports = class WorkerWarning extends WorkerError {
   /**
    * Creates a new WorkerWarning. Note that this always sets a reporting level
    * of warning unless explicitly overriden after instatiation.

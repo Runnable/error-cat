@@ -2,7 +2,6 @@
 
 const BaseError = require('./base-error')
 const Boom = require('boom')
-const isObject = require('101/is-object')
 
 /**
  * Error to be thrown from a RESTFul route. Automatically annotates the error
