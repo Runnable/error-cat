@@ -1,6 +1,6 @@
 'use strict'
 
-const WorkerStopError = require('./task-fatal-error')
+const WorkerStopError = require('./worker-stop-error')
 
 /**
  * Error that should be thrown when a worker job is found to be invalid.
