@@ -8,15 +8,17 @@ const BaseError = require('./base-error')
  * @extends error-cat:errors~BaseError
  * @author Ryan Sandor Richards
  */
-module.exports = class TaskError extends BaseError {
+module.exports = class WorkerError extends BaseError {
   /**
-   * Creates a new task error.
-   * @param {string} message Message for the error.
-   * @param {String} queue   Name of the queue for the worker.
-   * @param {Object} job     The job that was being processed.
+   * Creates a new worker error.
+   * @param {String} message Message for the error.
+   * @param {Object} data Additional data for the error to be given to rollbar.
+   * @param {Object} reporting Reporting options.
+   * @param {String} queue Name of the queue for the worker.
+   * @param {Object} job The job that was being processed.
    */
-  constructor (message, queue, job) {
-    super(message)
+  constructor (message, data, reporting, queue, job) {
+    super(message, data, reporting)
     this.setQueue(queue)
     this.setJob(job)
   }

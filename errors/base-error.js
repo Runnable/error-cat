@@ -25,7 +25,7 @@ module.exports = class BaseError extends ExtendableError {
    * Creates a new base error.
    * @param {String} message Message for the error.
    * @param {Object} data Additional data for the error to be given to rollbar.
-   * @param {Object} reporting Rollbar reporting options.
+   * @param {Object} reporting Reporting options.
    */
   constructor (message, data, reporting) {
     super(message)

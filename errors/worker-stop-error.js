@@ -1,6 +1,6 @@
 'use strict'
 
-const TaskError = require('./task-error')
+const WorkerError = require('./worker-error')
 
 /**
  * Error to be reported by a task handler for a worker. This type of error
@@ -14,12 +14,14 @@ const TaskError = require('./task-error')
  * 	 throw new TaskFatalError('Something went terribly wrong...')
  * })
  *
- * @param  {string} message Message for the error.
- * @param  {String} queue   Name of the queue for the worker.
- * @param  {Object} job     The job that was being processed.
+ * @param {String} message Message for the error.
+ * @param {Object} data Additional data for the error to be given to rollbar.
+ * @param {Object} reporting Reporting options.
+ * @param {String} queue Name of the queue for the worker.
+ * @param {Object} job The job that was being processed.
  *
  * @class
  * @module error-cat:errors
  * @extends error-cat:errors~TaskError
  */
-module.exports = class TaskFatalError extends TaskError {}
+module.exports = class TaskStopError extends WorkerError {}

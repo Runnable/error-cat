@@ -1,6 +1,6 @@
 'use strict'
 
-const TaskFatalError = require('./task-fatal-error')
+const WorkerStopError = require('./task-fatal-error')
 
 /**
  * Error that should be thrown when a worker job is found to be invalid.
@@ -17,6 +17,6 @@ const TaskFatalError = require('./task-fatal-error')
  *
  * @class
  * @module error-cat:errors
- * @extends error-cat:errors~TaskFatalError
+ * @extends error-cat:errors~WorkerStopError
  */
-module.exports = class InvalidJobError extends TaskFatalError {}
+module.exports = class InvalidJobError extends WorkerStopError {}
