@@ -36,6 +36,7 @@
     "101": "^0.18.0",
     "auto-debug": "^1.0.1",
     "boom": "^2.7.1",
+    "es6-error": "^2.1.0",
     "rollbar": "^0.5.3"
   },
   "devDependencies": {

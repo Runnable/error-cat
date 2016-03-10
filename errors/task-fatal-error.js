@@ -1,7 +1,6 @@
 'use strict'
 
-var TaskError = require('./task-error')
-var util = require('util')
+const TaskError = require('./task-error')
 
 /**
  * Error to be reported by a task handler for a worker. This type of error
@@ -21,9 +20,6 @@ var util = require('util')
  *
  * @class
  * @module error-cat:errors
- * @extends error-cat:errors:TaskError
+ * @extends error-cat:errors~TaskError
  */
-module.exports = function TaskFatalError(message, queue, job) {
-  TaskError.call(message, queue, job)
-}
-util.inherits(TaskFatalError, TaskError)
+module.exports = class TaskFatalError extends TaskError {}

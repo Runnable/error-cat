@@ -1,3 +1,9 @@
 'use strict'
 
-module.exports = require('./lib/error-cat')
+const ErrorCat = require('./lib/error-cat')
+
+/**
+ * Default ErrorCat instance.
+ * @module error-cat
+ */
+module.exports = new ErrorCat()
