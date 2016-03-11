@@ -9,9 +9,9 @@ const it = lab.test
 const expect = require('code').expect
 const sinon = require('sinon')
 
-const AbstractReporter = require('../src/abstract-reporter')
+const AbstractReporter = require('../lib/abstract-reporter')
 const rollbar = require('rollbar')
-const RollbarReporter = require('../src/rollbar-reporter')
+const RollbarReporter = require('../lib/rollbar-reporter')
 
 describe('RollbarReporter', () => {
   const error = {

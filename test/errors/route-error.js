@@ -9,7 +9,7 @@ const afterEach = lab.afterEach
 const expect = require('code').expect
 const sinon = require('sinon')
 
-const RouteError = require('../../src/errors/route-error')
+const RouteError = require('../../lib/errors/route-error')
 const Boom = require('boom')
 
 describe('errors', () => {
