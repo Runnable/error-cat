@@ -9,7 +9,7 @@ const it = lab.test
 const expect = require('code').expect
 const sinon = require('sinon')
 
-const WorkerError = require('../../errors/worker-error')
+const WorkerError = require('../../lib/errors/worker-error')
 
 describe('errors', () => {
   describe('WorkerError', () => {

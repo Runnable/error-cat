@@ -7,7 +7,7 @@ const afterEach = lab.afterEach
 const it = lab.test
 const expect = require('code').expect
 
-const AbstractReporter = require('../../lib/abstract-reporter')
+const AbstractReporter = require('../lib/abstract-reporter')
 
 describe('AbstractReporter', (done) => {
   const reporter = new AbstractReporter()
