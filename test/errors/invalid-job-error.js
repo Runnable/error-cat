@@ -6,8 +6,8 @@ const describe = lab.describe
 const it = lab.test
 const expect = require('code').expect
 
-const WorkerStopError = require('../../lib/errors/worker-stop-error')
-const InvalidJobError = require('../../lib/errors/invalid-job-error')
+const WorkerStopError = require('../../src/errors/worker-stop-error')
+const InvalidJobError = require('../../src/errors/invalid-job-error')
 
 describe('errors', () => {
   describe('InvalidJobError', () => {

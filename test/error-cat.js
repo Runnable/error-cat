@@ -8,8 +8,8 @@ const it = lab.test
 const expect = require('code').expect
 const sinon = require('sinon')
 
-const ErrorCat = require('../lib/error-cat')
-const RollbarReporter = require('../lib/rollbar-reporter')
+const ErrorCat = require('../src/error-cat')
+const RollbarReporter = require('../src/rollbar-reporter')
 
 describe('ErrorCat', () => {
   var cat

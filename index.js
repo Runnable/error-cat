@@ -1,6 +1,6 @@
 'use strict'
 
-const ErrorCat = require('./lib/error-cat')
+var ErrorCat = require('./lib/error-cat')
 
 /**
  * Default ErrorCat instance.

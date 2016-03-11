@@ -6,8 +6,8 @@ const describe = lab.describe
 const it = lab.test
 const expect = require('code').expect
 
-const WorkerError = require('../../lib/errors/worker-error')
-const WorkerWarning = require('../../lib/errors/worker-warning')
+const WorkerError = require('../../src/errors/worker-error')
+const WorkerWarning = require('../../src/errors/worker-warning')
 
 describe('errors', () => {
   describe('WorkerWarning', () => {

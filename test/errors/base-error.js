@@ -6,7 +6,7 @@ const describe = lab.describe
 const it = lab.test
 const expect = require('code').expect
 
-const BaseError = require('../../lib/errors/base-error')
+const BaseError = require('../../src/errors/base-error')
 
 describe('errors', () => {
   describe('BaseError', () => {
