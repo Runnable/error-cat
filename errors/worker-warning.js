@@ -13,6 +13,7 @@ module.exports = class WorkerWarning extends WorkerError {
    * Creates a new WorkerWarning. Note that this always sets a reporting level
    * of warning unless explicitly overriden after instatiation.
    * @param {string} message Message for the warning.
+   * @param {object} data Additional data for the warning.
    * @param {string} Name of the queue.
    * @param {object} job Job that caused the warning.
    */
