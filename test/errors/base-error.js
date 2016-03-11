@@ -30,16 +30,9 @@ describe('errors', () => {
         done()
       })
 
-      it('without reporting options should set a blank object', (done) => {
+      it('should set a blank reporting member', (done) => {
         const error = new BaseError('wowie')
         expect(error.reporting).to.deep.equal({})
-        done()
-      })
-
-      it('should set the given reporting options', (done) => {
-        const reporting = { level: 'fatal', fingerprint: 'neato' }
-        const error = new BaseError('wowie', null, reporting)
-        expect(error.reporting).to.deep.equal(reporting)
         done()
       })
     }) // end 'constructor'

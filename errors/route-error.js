@@ -28,8 +28,8 @@ module.exports = class RouteError extends BaseError {
    * @param {Object} data Additional data to be reported.
    * @param {Object} reporting Specific reporting options.
    */
-  constructor (message, statusCode, data, reporting) {
-    super(message, data, reporting)
+  constructor (message, statusCode, data) {
+    super(message, data)
     statusCode = statusCode || 500
     this.setLevel((statusCode >= 500) ? 'error' : 'warn')
     Boom.wrap(this, statusCode)

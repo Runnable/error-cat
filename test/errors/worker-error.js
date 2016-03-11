@@ -28,7 +28,7 @@ describe('errors', () => {
 
       it('should set the queue name', (done) => {
         const queue = 'neat:stuff'
-        const error = new WorkerError('', {}, {}, queue)
+        const error = new WorkerError('', {}, queue)
         expect(WorkerError.prototype.setQueue.calledWith(queue)).to.be.true()
         expect(error.data.queue).to.equal(queue)
         done()
@@ -36,7 +36,7 @@ describe('errors', () => {
 
       it('should set the job', (done) => {
         const job = { type: 'neat:stuff' }
-        const error = new WorkerError('', {}, {}, '', job)
+        const error = new WorkerError('', {}, '', job)
         expect(WorkerError.prototype.setJob.calledWith(job)).to.be.true()
         expect(error.data.job).to.deep.equal(job)
         done()

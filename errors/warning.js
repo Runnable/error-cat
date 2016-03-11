@@ -14,10 +14,9 @@ module.exports = class Warning extends BaseError {
    * 'warning' unless explicitly overriden after instatiation.
    * @param {String} message Message for the error.
    * @param {Object} data Additional data for the error to be given to rollbar.
-   * @param {Object} reporting Rollbar reporting options.
    */
-  constructor (message, data, reporting) {
-    super(message, data, reporting)
+  constructor (message, data) {
+    super(message, data)
     this.setLevel('warn')
   }
 }

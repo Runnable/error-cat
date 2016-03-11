@@ -15,12 +15,11 @@ module.exports = class BaseError extends ExtendableError {
    * Creates a new base error.
    * @param {String} message Message for the error.
    * @param {Object} data Additional data for the error to be given to rollbar.
-   * @param {Object} reporting Reporting options.
    */
-  constructor (message, data, reporting) {
+  constructor (message, data) {
     super(message)
     this.data = isObject(data) ? data : {}
-    this.reporting = isObject(reporting) ? reporting : {}
+    this.reporting = {}
   }
 
   /**

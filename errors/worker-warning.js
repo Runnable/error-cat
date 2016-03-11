@@ -16,8 +16,8 @@ module.exports = class WorkerWarning extends WorkerError {
    * @param {string} Name of the queue.
    * @param {object} job Job that caused the warning.
    */
-  constructor (message, data, reporting, queue, job) {
-    super(message, data, reporting, queue, job)
+  constructor (message, data, queue, job) {
+    super(message, data, queue, job)
     this.setLevel('warn')
   }
 }
