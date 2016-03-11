@@ -168,8 +168,8 @@ We advise that you simply read the `lib/abstract-reporter.js` class file thoroug
 
 For usage reference here is an example of how to implement a custom reporter:
 ```js
-const AbstractReporter = require('error-cat/lib/abstract-reporter')
-const ErrorCat = require('error-cat/lib/error-cat')
+const AbstractReporter = require('error-cat/abstract-reporter')
+const ErrorCat = require('error-cat/error-cat')
 const noop = require('101/noop')
 
 // 1) Define the reporter...
