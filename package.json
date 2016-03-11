@@ -2,12 +2,12 @@
   "name": "error-cat",
   "version": "1.4.2",
   "description": "A friendly feline companion that helps you create, track, and report errors.",
-  "main": "dist/index.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "build": "babel --out-dir dist lib",
+    "build": "babel --out-dir . lib",
     "prepublish": "not-in-install && npm run build || in-install",
     "doc": "jsdoc index.js -d doc/; open -a 'Google Chrome' doc/index.html",
     "lint": "standard --verbose",
