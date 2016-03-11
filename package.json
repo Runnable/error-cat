@@ -7,8 +7,10 @@
     "test": "test"
   },
   "scripts": {
+    "build": "babel --out-dir . lib",
+    "prepublish": "not-in-install && npm run build || in-install",
     "doc": "jsdoc index.js -d doc/; open -a 'Google Chrome' doc/index.html",
-    "lint": "jshint index.js",
+    "lint": "standard --verbose",
     "unit": "lab -v -c -a code",
     "test": "npm run lint && npm run unit"
   },
@@ -34,15 +36,21 @@
   "homepage": "https://github.com/Runnable/error-cat",
   "dependencies": {
     "101": "^0.18.0",
-    "auto-debug": "^1.0.1",
+    "array-find": "^1.0.0",
     "boom": "^2.7.1",
+    "es6-error": "^2.1.0",
+    "in-publish": "^2.0.0",
     "rollbar": "^0.5.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-eslint": "^5.0.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-register": "^6.5.2",
     "code": "^1.4.0",
     "jsdoc": "^3.3.0-beta3",
-    "jshint": "^2.7.0",
     "lab": "^5.8.0",
-    "sinon": "^1.14.1"
+    "sinon": "^1.14.1",
+    "standard": "^6.0.8"
   }
 }
