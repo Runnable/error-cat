@@ -197,11 +197,48 @@ describe('RollbarReporter', () => {
           expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
             .to.deep.equal({
               level: 'error',
-              fingerprint: null,
               custom: {}
             })
+          done()
         })
-        done()
+      })
+
+      it('should add fingerprint when present', (done) => {
+        const error = {
+          message: 'sucka',
+          reporting: {
+            fingerprint: 'whoooodoggy'
+          }
+        }
+        reporter.report(error, () => {
+          expect(rollbar.handleErrorWithPayloadData.calledOnce).to.be.true()
+          expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
+            .to.deep.equal({
+              level: 'error',
+              fingerprint: error.reporting.fingerprint,
+              custom: {}
+            })
+          done()
+        })
+      })
+
+      it('should stringify non-string fingerprints', (done) => {
+        const error = {
+          message: 'sucka',
+          reporting: {
+            fingerprint: {foo: 'bar'}
+          }
+        }
+        reporter.report(error, () => {
+          expect(rollbar.handleErrorWithPayloadData.calledOnce).to.be.true()
+          expect(rollbar.handleErrorWithPayloadData.firstCall.args[1])
+            .to.deep.equal({
+              level: 'error',
+              fingerprint: JSON.stringify(error.reporting.fingerprint),
+              custom: {}
+            })
+          done()
+        })
       })
     })
   }) // end 'report'
