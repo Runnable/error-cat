@@ -9,10 +9,12 @@ const expect = require('code').expect
 const sinon = require('sinon')
 
 const ErrorCat = require('../lib/error-cat')
+const noop = require('101/noop')
 const RollbarReporter = require('../lib/rollbar-reporter')
 
 describe('ErrorCat', () => {
   var cat
+  const reporter = { initialize: noop }
 
   beforeEach((done) => {
     cat = new ErrorCat()
@@ -43,7 +45,6 @@ describe('ErrorCat', () => {
 
     describe('given reporter', () => {
       it('should use the given reporter', (done) => {
-        const reporter = { my: 'reporter' }
         const errorCat = new ErrorCat(reporter)
         expect(errorCat.reporter).to.equal(reporter)
         done()
@@ -53,8 +54,15 @@ describe('ErrorCat', () => {
 
   describe('setReporter', () => {
     it('should set the reporter', (done) => {
-      cat.setReporter('food')
-      expect(cat.reporter).to.equal('food')
+      cat.setReporter(reporter)
+      expect(cat.reporter).to.equal(reporter)
+      done()
+    })
+
+    it('should initialize the reporter', (done) => {
+      const reporter = { initialize: sinon.stub() }
+      cat.setReporter(reporter)
+      expect(reporter.initialize.calledOnce).to.be.true()
       done()
     })
   }) // end 'setReporter'
