@@ -30,6 +30,15 @@ describe('errors', () => {
         done()
       })
 
+      it('should set reporting', (done) => {
+        const reporting = {
+          level: 'new-level'
+        }
+        const error = new BaseError('wowie', {}, reporting)
+        expect(error.reporting).to.deep.equal(reporting)
+        done()
+      })
+
       it('should set a blank reporting member', (done) => {
         const error = new BaseError('wowie')
         expect(error.reporting).to.deep.equal({})
