@@ -28,10 +28,24 @@ describe('errors', () => {
 
       it('should set the reporting', (done) => {
         const reporting = {
-          level: 'new-level'
+          level: 'new-level',
+          fingerprint: 'new-fingerprint'
         }
         const error = new WorkerError('', {}, reporting)
-        expect(error.reporting).to.equal(reporting)
+        expect(error.reporting).to.deep.equal(reporting)
+        done()
+      })
+
+      it('should pass only allowed reporting fields', (done) => {
+        const reporting = {
+          level: 'new-level',
+          fingerprint: 'new-fingerprint',
+          customer: 'Runnable'
+        }
+        const error = new WorkerError('', {}, reporting)
+        expect(error.reporting).to.not.deep.equal(reporting)
+        delete reporting.customer
+        expect(error.reporting).to.deep.equal(reporting)
         done()
       })
 
