@@ -40,7 +40,7 @@
     "boom": "^3.1.2",
     "es6-error": "^3.0.1",
     "in-publish": "^2.0.0",
-    "rollbar": "^0.6.2"
+    "rollbar": "^0.6.3"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
